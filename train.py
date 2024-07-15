@@ -3,7 +3,7 @@ from datetime import datetime, timezone, timedelta
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Flatten
+from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import TensorBoard
 
@@ -21,7 +21,11 @@ def main():
 
     # create a model
     model = Sequential([
-        Flatten(input_shape=(28, 28)),  # input layer
+        Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # 32 3x3 filters, ReLU activation
+        MaxPooling2D((2, 2)),  # 2x2 max pooling
+        Conv2D(64, (3, 3), activation='relu'),  # 64 3x3 filters, ReLU activation
+        MaxPooling2D((2, 2)),  # 2x2 max pooling
+        Flatten(),
         Dense(128, activation='relu'),  # 128 neurons, ReLU activation
         Dense(10, activation='softmax')  # 10 neurons, softmax activation
     ])
