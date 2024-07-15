@@ -21,10 +21,11 @@ def main():
 
     # create a model
     model = Sequential([
-        Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),  # 32 3x3 filters, ReLU activation
+        Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1), padding='same'),
         MaxPooling2D((2, 2)),  # 2x2 max pooling
-        Conv2D(64, (3, 3), activation='relu'),  # 64 3x3 filters, ReLU activation
+        Conv2D(64, (3, 3), activation='relu', padding='same'),  # 64 3x3 filters, ReLU activation
         MaxPooling2D((2, 2)),  # 2x2 max pooling
+        Conv2D(64, (3, 3), activation='relu', padding='same'),  # 64 3x3 filters, ReLU activation
         Flatten(),
         Dense(128, activation='relu'),  # 128 neurons, ReLU activation
         Dense(10, activation='softmax')  # 10 neurons, softmax activation
@@ -40,7 +41,7 @@ def main():
     log_dir = f'logs/fit/{now_time}'
     tensor_board = TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-    model.fit(x_train, y_train, epochs=5, callbacks=[tensor_board])
+    model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test), callbacks=[tensor_board])
     model.save(f'models/model-{now_time}.keras')
 
 
